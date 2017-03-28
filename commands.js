@@ -1143,6 +1143,7 @@ exports.commands = {
         var typo = false;
         if (arg[0] == "typo") {
             if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
+        }
 		var hasPerms = false;
 		arg = arg.split(', ');
         var typo = false;
@@ -1197,7 +1198,7 @@ exports.commands = {
 		this.settings.wotdHistory.push(wotd);
 		this.writeSettings();
 		this.say(room, text + "The Word of the Day has been set to '" + arg[0] + "'!");
-	}},
+	},
 	//Returns the link to the Writing Room's website.
 	site: function (arg, user, room) {
 		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ';
