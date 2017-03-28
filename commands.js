@@ -1189,7 +1189,7 @@ exports.commands = {
 		} else {
 			wotd.time = this.settings.wotd.time,
 			wotd.user = this.settings.wotd.user
-		 }
+		}
 		if (!this.settings.wotdHistory) {
 			this.settings.wotdHistory = [];
 		}
