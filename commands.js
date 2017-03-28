@@ -1139,11 +1139,18 @@ exports.commands = {
 			return this.say(room, text + "Today's Word of the Day is **" + this.settings.wotd.word + "**: " + this.settings.wotd.kind + " [__" + this.settings.wotd.pron + "__] - " + this.settings.wotd.definition);
 		}
 		if (toId(arg) === 'check' || toId(arg) === 'time') return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
+<<<<<<< HEAD
 		
 		arg = arg.split(', ');
         var typo = false;
         if (arg[0] == "typo") {
             if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.")
+=======
+		var hasPerms = false;
+		arg = arg.split(', ');
+        var typo = false;
+        if (arg[0] = "typo") {
+>>>>>>> 674e3ee7040071fb44cdecfc69376ae5bd1575bc
             typo = true;
             var newarg = [];
             for (i = 0; i < arg.length; i++) {
