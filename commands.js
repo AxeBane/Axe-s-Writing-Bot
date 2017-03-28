@@ -1140,8 +1140,18 @@ exports.commands = {
 		}
 		if (toId(arg) === 'check' || toId(arg) === 'time') return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
 		var hasPerms = false;
+		arg = arg.split(', ');
+        var typo = false;
+        if (arg[0] = "typo") {
+            typo = true;
+            var newarg = [];
+            for (i = 0; i < arg.length; i++) {
+                newarg[i] = arg[1+i];
+            }
+            arg = newarg;
+        }
 		if (this.settings.wotd) {
-			if (Date.now() - this.settings.wotd.time < 61200000) return this.say(room, "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
+			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
 		}
 		if (this.settings.scribeShop) {
 			if (user.hasRank(room.id, '+')) {
@@ -1161,7 +1171,6 @@ exports.commands = {
 			hasPerms = true;
 		}
 		if (!hasPerms) return this.say(room, text + 'You must be at least Voice or higher to set the Word of the Day.');
-		arg = arg.split(', ');
 		if (arg.length < 4) return this.say(room, text + "Invalid arguments specified. The format is: __word__, __pronunciation__, __part of speech__, __defintion__.");
 		var wotd = {
 			word: arg[0],
