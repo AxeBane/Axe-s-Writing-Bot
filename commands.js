@@ -1142,9 +1142,9 @@ exports.commands = {
 		arg = arg.split(', ');
         var typo = false;
         if (arg[0] == "typo") {
+            if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to correct!");
             if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
         }
-		var hasPerms = false;
 		arg = arg.split(', ');
         var typo = false;
         if (arg[0] = "typo") {
