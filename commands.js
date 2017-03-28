@@ -1147,10 +1147,6 @@ exports.commands = {
 		if (arg[0] === "typo") {
 			if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to correct!");
 			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
-		}
-		arg = arg.split(', ');
-		var typo = false;
-		if (arg[0] = "typo") {
 			typo = true;
 			var newarg = [];
 			for (i = 0; i < arg.length; i++) {
@@ -1193,7 +1189,7 @@ exports.commands = {
 		} else {
 			wotd.time = this.settings.wotd.time,
 			wotd.user = this.settings.wotd.user
-		}
+		 }
 		if (!this.settings.wotdHistory) {
 			this.settings.wotdHistory = [];
 		}
