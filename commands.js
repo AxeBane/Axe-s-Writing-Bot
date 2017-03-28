@@ -1139,29 +1139,29 @@ exports.commands = {
 			return this.say(room, text + "Today's Word of the Day is **" + this.settings.wotd.word + "**: " + this.settings.wotd.kind + " [__" + this.settings.wotd.pron + "__] - " + this.settings.wotd.definition);
 		}
 		if (toId(arg) === 'check' || toId(arg) === 'time') {
-            if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to check!");
-            return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
-        }
+			if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to check!");
+			return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
+		}
 		arg = arg.split(', ');
-        var typo = false;
-        if (arg[0] === "typo") {
-            if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to correct!");
-            if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
-        }
+		var typo = false;
+		if (arg[0] === "typo") {
+			if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to correct!");
+			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
+		}
 		arg = arg.split(', ');
-        var typo = false;
-        if (arg[0] = "typo") {
-            typo = true;
-            var newarg = [];
-            for (i = 0; i < arg.length; i++) {
-                newarg[i] = arg[1+i];
-            }
-            arg = newarg;
-        }
+		var typo = false;
+		if (arg[0] = "typo") {
+			typo = true;
+			var newarg = [];
+			for (i = 0; i < arg.length; i++) {
+				newarg[i] = arg[1+i];
+			}
+			arg = newarg;
+		}
 		if (this.settings.wotd) {
 			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
 		}
-        var hasPerms = false;
+		var hasPerms = false;
 		if (this.settings.scribeShop) {
 			if (typo || user.hasRank(room.id, '+')) {
 				hasPerms = true;
@@ -1187,13 +1187,13 @@ exports.commands = {
             		kind: arg[2],
 			definition: arg.slice(3).join(', ').trim(),
 		};
-        if (!typo) {
+		if (!typo) {
 			wotd.time = Date.now(),
 			wotd.user = user.name
-        } else {
-            wotd.time = this.settings.wotd.time,
-            wotd.user = this.settings.wotd.user
-        }
+		} else {
+			wotd.time = this.settings.wotd.time,
+			wotd.user = this.settings.wotd.user
+		}
 		if (!this.settings.wotdHistory) {
 			this.settings.wotdHistory = [];
 		}
