@@ -1311,6 +1311,89 @@ exports.commands = {
 		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ';
 		this.say(room, text + "Every week we hold a Sunday Scribing challenge in which participants are to write a story or a poem (depending on the week) based on the topic announced on Sunday. They have until the following Friday to submit it. For more info and the submission link: http://goo.gl/Ezik4q");
 	},
+	//Starts a game of hemingway
+	hemmingway: function (arg, user, room) {
+		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ');
+		arg = arg.split(', ');
+		if (arg[0] === "gamestart") {
+			if (this.settings.hemingway) return this.say(room, text + "There is already an active Hemingway game!");
+			if (!user.hasRank(room.id, '%')) return this.say(room, text + "You must be driver or above to start a game of Hemingway.");
+			var Hemingway = {
+				numPlayers : 0,
+				players: [].
+				theme: "",
+				host: user.name,
+				stage: "setup",
+				roundStartTime: -1
+			};			
+			return this.say(room, text + "Hemingway game started!");
+		}
+		if (!this.settings.hemingway) return this.say(room, text + "There is no active Hemingway game!");
+		var userJoinedGame = false;
+		var userIndex = -1;
+		for (i = 0; i < numPlayers; i++) {
+			if (this.settings.hemingway.players[i].name === user.name) {
+				userJoinedGame = true;
+				userIndex = i;
+			}
+		}
+		if (arg[0] === "join") {
+			if (userJoinedGame) return this.say(room, text + "You have already joined!");
+			var player = {
+				name: player.name,
+				numVotes: 0,
+				voted: false,
+				entry: ""
+			};
+			this.settings.hemingway.players[this.setting.numPlayers] = user.name;
+			numPlayers += numPlayers;
+		}
+		if (arg[0] === "settheme") {
+			if (!user.hasRank(room.id, '%')) return this.say(room, text + "You must be driver or above to set the theme.");
+			if (!arg[1]) return this.say(room, text + "Please specify a theme.");
+			this.settings.hemingway.theme = "__" + arg.slice(1).join(', ').trim() + "__";
+		}
+		if (arg[0] === "roundstart") {
+			if (!user.hasRank(room.id, '%')) return this.say(room, text + "You must be driver or above to start the round.");
+			this.settings.hemingway.stage = "round";
+			return this.say(room, text + "Hemingway round has started! The theme is" + this.settings.hemingway.theme);
+		
+		}
+		if (arg[0] === "submit") {
+			//check if user has joined, if not might make them join automatically or make a temporary 1 time thing?.
+			//then changes their entry to the current one
+		}
+		if (arg[0] === "submitcheck") {
+			if (this.settings.hemingway.stage != "round") return this.say(room, text + "A Hemingway round is not in progress!");
+			//needs to pm the user always
+			return this.say(room, text + this.settings.players[userIndex].entry);
+		}
+		if (arg[0] === "timecheck") {
+			if (this.settings.hemingway.stage != "round") return this.say(room, text + "A Hemingway round is not in progress!");
+			//return remaining time
+			return this.say(room, text + "");
+		}
+		if (arg[0] === "themecheck") {
+			if (this.settings.hemingway.stage != "round") return this.say(room, text + "A Hemingway round is not in progress!");
+			return this.say(room, text + "The theme is" + this.settings.hemingway.theme);
+		}
+		if (arg[0] === "roundforceend") {
+			this.settings.hemingway.stage = "vote"
+			//kick users that have not submitted
+			return this.say(room, text + "Hemingway round has ended! Start voting!");
+		}
+		if (arg[0] === "vote") {
+			if (this.settings.hemingway.stage === "round") return this.say(room, text + "A Hemingway round is currently in progress! Please wait for it to finish before voting.");
+			if (this.settings.hemingway.stage === "setup") return this.say(room, text + "The round has already ended! Please wait for the next round to finish before voting.");
+			//add 1 to votee, say voter has voted, if all voters have voted reveal winner and go into setup
+			if (this.settings.hemingway.players.contains(user.name)
+		}
+		if (arg[0] === "gameend") {
+			//destroy this.settings.hemingway and distribute quills
+		}
+		//how to autoend rounds at the end of the time limit? how to display message when its almost over?
+	
+	}
 	//Returns a link to a Google Form where one can request for a new folder.
 	reqfolder: 'folderreq',
 	folderreq: function (arg, user, room) {
