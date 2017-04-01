@@ -1136,7 +1136,19 @@ exports.commands = {
 		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ';
 		if (!arg) {
 			if (!this.settings.wotd) return this.say(room, text + "No Word of the Day has been set.");
-			return this.say(room, text + "Today's Word of the Day is **" + this.settings.wotd.word + "**: " + this.settings.wotd.kind + " [__" + this.settings.wotd.pron + "__] - " + this.settings.wotd.definition);
+			var tem = new Date(this.settings.wotd.time).toLocaleString('en-US', {hour: 'numeric',minute:'numeric',day:'2-digit',month:'long',hour12: true,timezonename:'short'});
+			var box = '<div style="background:url(https://i.imgur.com/loMDPK2.jpg) center;margin:-2px -4px;box-shadow:inset 0 0 50px rgba(0,0,0,0.15)"> <div style="font-family:serif;max-width:500px;margin:auto;padding:15px;text-align:justify;"> <span style="display:block;font-family:serif;font-size:18pt;font-style:oblique;background:#6688AA;padding:5px 0;text-align:center;border-radius:2px;color:rgba(255,255,255,1);margin-bottom:2px;"><i class="fa fa-book" aria-hidden="true"></i> Word of the Day <i class="fa fa-pencil" aria-hidden="true"></i></span> <span style="font-size:30pt;display:block;">'+this.settings.wotd.word+'</span> <span style="font-family:sans-serif;font-size:12pt;display:block;color:rgba(0,0,0,0.7);letter-spacing:2px;">'+this.settings.wotd.pron+' / <strong style="letter-spacing:0;">'+this.settings.wotd.kind+'</strong></span><span style="font-size:10pt;font-family:sans-serif;margin-top:10px;display:block;color:rgba(0,0,0,0.8)"><strong style="font-family:serif;margin-right:10px;color:rgba(0,0,0,0.5)">1.</strong>'+this.settings.wotd.definition+'</span><div style="width:100%;padding:2px 0;border:1px solid #6688AA;display:block;font-family:sans-serif;font-size:9.5pt;color:#6688AA;text-align:center;margin-top:15px;border-radius:2px;"> <span><i class="fa fa-refresh" aria-hidden="true"></i> Set by '+this.settings.wotd.user+' on '+tem+'</span> </div></div></div>';
+			var boxpm = '<div style="background:url(https://i.imgur.com/loMDPK2.jpg) center;margin:-2px -4px;box-shadow:inset 0 0 50px rgba(0,0,0,0.15)"> <div style="font-family:serif;max-width:500px;margin:auto;padding:15px;text-align:justify;"> <span style="display:block;font-family:serif;font-size:14pt;font-style:oblique;background:#6688AA;padding:5px 0;text-align:center;border-radius:2px;color:rgba(255,255,255,1);margin-bottom:2px;">Word of the Day</span> <span style="font-size:20pt;display:block;">'+this.settings.wotd.word+'</span> <span style="font-family:sans-serif;font-size:11pt;display:block;color:rgba(0,0,0,0.7);letter-spacing:2px;">'+this.settings.wotd.pron+' / <strong style="letter-spacing:0;">'+this.settings.wotd.kind+'</strong></span><span style="font-size:10pt;font-family:sans-serif;margin-top:10px;display:block;color:rgba(0,0,0,0.8)"><strong style="font-family:serif;margin-right:10px;color:rgba(0,0,0,0.5)">1.</strong>'+this.settings.wotd.definition+'</span></div></div>';
+			if (user.hasRank(room.id, '+') && room !== user) {
+				return this.say(room, '!htmlbox ' + box);
+			} else {
+				// The below is a hacky way to get pminfobox to work within PM. It defaults to Writing since AxeBot/The Scribe is always * in that room. For personal bots, this should be changed to any room that you can guarentee the bot has at least * permissions.
+				if (Config.serverid === 'showdown' && (Config.nick === 'The Scribe' || Config.nick === 'AxeBot')) {
+					return this.say(Rooms.get('writing'), '/pminfobox ' + user.id + ', ' + boxpm);
+				} else {
+					return this.say(room, text + "Today's Word of the Day is **" + this.settings.wotd.word + "**: " + this.settings.wotd.kind + " [__" + this.settings.wotd.pron + "__] - " + this.settings.wotd.definition);
+				}
+			}
 		}
 		if (toId(arg) === 'check' || toId(arg) === 'time') return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
 		var hasPerms = false;
@@ -1165,8 +1177,8 @@ exports.commands = {
 		if (arg.length < 4) return this.say(room, text + "Invalid arguments specified. The format is: __word__, __pronunciation__, __part of speech__, __defintion__.");
 		var wotd = {
 			word: arg[0],
-            		pron: arg[1],
-            		kind: arg[2],
+            pron: arg[1],
+            kind: arg[2],
 			definition: arg.slice(3).join(', ').trim(),
 			time: Date.now(),
 			user: user.name
