@@ -1151,14 +1151,14 @@ exports.commands = {
 			}
 		}
 		if (toId(arg) === 'check' || toId(arg) === 'time') {
-			if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to check!");
+			if (!this.settings.wotd) return this.say(room, text + "There is no Word of the Day to check!");
 			return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
 		}
 		arg = arg.split(', ');
 		var typo = false;
 		if (arg[0] === "typo") {
-			if (!this.settings.wotd) return this.say(room, "There is no Word of the Day to correct!");
-			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, "Sorry, you must be the original user or driver and above to make typo corrections.");
+			if (!this.settings.wotd) return this.say(room, text + "There is no Word of the Day to correct!");
+			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, text + "Sorry, you must be the original user or driver and above to make typo corrections.");
 			typo = true;
 			var newarg = [];
 			for (i = 0; i < arg.length; i++) {
@@ -1167,7 +1167,7 @@ exports.commands = {
 			arg = newarg;
 		}
 		if (this.settings.wotd) {
-			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
+			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, text + "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
 		}
 		var hasPerms = false;
 		if (this.settings.scribeShop) {
