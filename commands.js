@@ -1160,11 +1160,7 @@ exports.commands = {
 			if (!this.settings.wotd) return this.say(room, text + "There is no Word of the Day to correct!");
 			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, text + "Sorry, you must be the original user or driver and above to make typo corrections.");
 			typo = true;
-			var newarg = [];
-			for (i = 0; i < arg.length; i++) {
-				newarg[i] = arg[1+i];
-			}
-			arg = newarg;
+			arg.shift();
 		}
 		if (this.settings.wotd) {
 			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, text + "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
