@@ -1193,14 +1193,14 @@ exports.commands = {
 			word: arg[0],
             pron: arg[1],
             kind: arg[2],
-			definition: arg.slice(3).join(', ').trim(),
+			definition: arg.slice(3).join(', ').trim()
 		};
 		if (!typo) {
-			wotd.time = Date.now(),
-			wotd.user = user.name
+			wotd.time = Date.now();
+			wotd.user = user.name;
 		} else {
-			wotd.time = this.settings.wotd.time,
-			wotd.user = this.settings.wotd.user
+			wotd.time = this.settings.wotd.time;
+			wotd.user = this.settings.wotd.user;
 		}
 		if (!this.settings.wotdHistory) {
 			this.settings.wotdHistory = [];
@@ -1285,7 +1285,7 @@ exports.commands = {
 		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ';
 		switch (room.id) {
 		case 'writing':
-			text += "If you're new to the Writing room, be sure to read our introduction: http://pswriting.weebly.com/introduction.html";
+			text += "If you're new to the Writing room, be sure to read our website: http://pswriting.weebly.com/";
 			break;
 		case 'mythology':
 			text += "Welcome to Myths & Magic! In this room, we, well... talk about mythology and magic! Though, discussion of black magic is not encouraged.";
