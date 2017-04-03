@@ -1,3 +1,7 @@
+As of Tues 4 April, 2017. Support for this branch of The Scribe is being stopped due to significant overhauls.
+====================
+New link: https://github.com/AxeBane/The-Scribe
+
 Writing Room Bot
 ====================
 
