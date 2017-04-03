@@ -1150,13 +1150,24 @@ exports.commands = {
 				}
 			}
 		}
-		if (toId(arg) === 'check' || toId(arg) === 'time') return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
-		var hasPerms = false;
-		if (this.settings.wotd) {
-			if (Date.now() - this.settings.wotd.time < 61200000) return this.say(room, "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
+		if (toId(arg) === 'check' || toId(arg) === 'time') {
+			if (!this.settings.wotd) return this.say(room, text + "There is no Word of the Day to check!");
+			return this.say(room, text + "The Word of the Day was last updated to **" + this.settings.wotd.word + "** " + this.getTimeAgo(this.settings.wotd.time) + " ago by " + this.settings.wotd.user);
 		}
+		arg = arg.split(', ');
+		var typo = false;
+		if (arg[0] === "typo") {
+			if (!this.settings.wotd) return this.say(room, text + "There is no Word of the Day to correct!");
+			if ((!user.hasRank(room.id, '%')) && user.name != this.settings.wotd.user) return this.say(room, text + "Sorry, you must be the original user or driver and above to make typo corrections.");
+			typo = true;
+			arg.shift();
+		}
+		if (this.settings.wotd) {
+			if (!typo && Date.now() - this.settings.wotd.time < 61200000) return this.say(room, text + "Sorry, but at least 17 hours must have passed since the WOTD was last set in order to set it again!");
+		}
+		var hasPerms = false;
 		if (this.settings.scribeShop) {
-			if (user.hasRank(room.id, '+')) {
+			if (typo || user.hasRank(room.id, '+')) {
 				hasPerms = true;
 			} else {
 				for (i = 0; i < this.settings.scribeShop.length; i++) {
@@ -1173,16 +1184,20 @@ exports.commands = {
 			hasPerms = true;
 		}
 		if (!hasPerms) return this.say(room, text + 'You must be at least Voice or higher to set the Word of the Day.');
-		arg = arg.split(', ');
 		if (arg.length < 4) return this.say(room, text + "Invalid arguments specified. The format is: __word__, __pronunciation__, __part of speech__, __defintion__.");
 		var wotd = {
 			word: arg[0],
             pron: arg[1],
             kind: arg[2],
-			definition: arg.slice(3).join(', ').trim(),
-			time: Date.now(),
-			user: user.name
+			definition: arg.slice(3).join(', ').trim()
 		};
+		if (!typo) {
+			wotd.time = Date.now();
+			wotd.user = user.name;
+		} else {
+			wotd.time = this.settings.wotd.time;
+			wotd.user = this.settings.wotd.user;
+		}
 		if (!this.settings.wotdHistory) {
 			this.settings.wotdHistory = [];
 		}
@@ -1266,7 +1281,7 @@ exports.commands = {
 		var text = user.hasRank(room.id, '+') || room === user ? '' : '/pm ' + user.name + ', ';
 		switch (room.id) {
 		case 'writing':
-			text += "If you're new to the Writing room, be sure to read our introduction: http://pswriting.weebly.com/introduction.html";
+			text += "If you're new to the Writing room, be sure to read our website: http://pswriting.weebly.com/";
 			break;
 		case 'mythology':
 			text += "Welcome to Myths & Magic! In this room, we, well... talk about mythology and magic! Though, discussion of black magic is not encouraged.";
